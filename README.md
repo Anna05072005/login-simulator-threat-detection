@@ -1,107 +1,100 @@
-# Login Activity Simulator & Threat Detection System
+Login Activity Simulator & Threat Detection System
+Overview
 
-## Overview
-This project simulates authentication activity in a corporate environment and applies SQL-based detection rules to identify suspicious behavior such as brute-force attacks, password spraying, and potential account compromise.
+This project builds a security analytics pipeline that simulates corporate authentication activity and detects suspicious behavior using SQL-based detection rules.
 
-A Python simulator generates dynamic users, devices, IP addresses, and login events, which are stored in a SQLite database. Detection logic is implemented entirely in SQL and executed by a separate detection runner, mimicking a simplified SIEM-style security analytics pipeline.
+The goal is to demonstrate an end-to-end cybersecurity data workflow including event simulation, database design, rule-based detection, and alert generation.
 
-The objective is to demonstrate an end-to-end security analytics workflow including data simulation, storage, aggregation, and rule-based threat detection.
+Dataset
 
----
+Source: Synthetic authentication telemetry generated in Python
 
-## Project Structure
+Database file: data/siem.db (generated locally)
 
+Main table: auth_events
+
+The simulator dynamically creates:
+
+Users with departments and roles
+
+Devices with operating systems and browsers
+
+IP addresses and geographic locations
+
+Successful and failed login attempts
+
+Suspicious activity is probabilistically injected to simulate realistic attack scenarios.
+
+Project Structure
 login-simulator-siem/
 ├── data/
-│ └── siem.db # generated locally (not committed)
+│   └── siem.db
 ├── src/
-│ ├── simulate.py # generates authentication events
-│ └── detect.py # runs SQL detections and stores alerts
-├── schema.sql # database schema (tables + indexes)
-├── detections.sql # SQL detection rules
+│   ├── simulate.py
+│   └── detect.py
+├── schema.sql
+├── detections.sql
 ├── requirements.txt
 └── README.md
 
+Methodology
 
-> Note: `data/siem.db` is generated locally and ignored via `.gitignore`.
+Authentication telemetry simulation using Python
 
+SQLite database schema with indexed tables
 
----
+SQL-based threat detection rules
 
-## Methodology
+Aggregation over rolling 10-minute windows
 
-### Simulation
-Authentication telemetry is generated using Python, including:
-- Users with departments and roles
-- Devices with operating systems and browsers
-- IP addresses and geographic locations
-- Successful and failed login attempts
+Alert generation with severity levels
 
-Events are written to SQLite in the `auth_events` table. Suspicious behavior is injected probabilistically to simulate attack scenarios such as credential stuffing, brute force, and password spraying.
+Detection rules identify:
 
-### Detection
-Detection logic is implemented entirely in SQL (`detections.sql`) and executed by `detect.py`.
+Brute-force attacks from a single IP
 
-Current rules aggregate authentication failures over a rolling **10-minute window** and generate alerts for:
-- Brute force from a single IP address
-- Account under attack (multiple failed attempts for one user)
-- Password spraying (one IP targeting many users)
-- New device login (successful login from an unseen device for a user)
+Account under attack (multiple failed attempts)
 
-Each alert includes timestamp, severity, type, entity (user/IP), and a short explanation. Results are stored in the `alerts` table.
+Password spraying (one IP targeting many users)
 
----
+New device login activity
 
-## Database Schema
-Main tables:
-- `users` — employee accounts and roles
-- `devices` — registered devices (OS and browser)
-- `auth_events` — authentication activity (timestamp, user, IP, device, location, success/failure)
-- `alerts` — detection results with severity and investigation context
+Alerts are stored in the alerts table with timestamp, severity, entity, and explanation.
 
-Indexes are applied to authentication timestamps and commonly filtered fields for efficient detection queries.
+Results
 
----
+The system successfully generates realistic authentication telemetry and identifies anomalous patterns using rule-based SQL detection.
 
+Alerts are printed to the terminal and persisted in the database for investigation and further analysis.
 
-## How to Run
+How to Run
 
-###
-0) Setup 
+From the project root directory:
 
-```bash
 python -m venv .venv
 # Windows: .venv\Scripts\activate
 # macOS/Linux: source .venv/bin/activate
+
 pip install -r requirements.txt
 
-1) Initialize schema ((first run or after deleting DB)
-
+# Initialize schema (first run only)
 python src/detect.py --db data/siem.db --init-schema
 
-2) Start the simulator
-Run for 60 seconds:
-
+# Run simulator (60 seconds)
 python src/simulate.py --duration 60
 
-Or run indefinitely (stop with Ctrl+C):
-
-python src/simulate.py
-
-
-3) Run detections
-
+# Run detections
 python src/detect.py --db data/siem.db
 
-Recent alerts will be printed to the terminal and stored in the alerts table.
-
 Technologies
+
 Python
 SQLite
 SQL
-(Standard libraries commonly used: sqlite3, argparse, random, datetime)
+argparse
+sqlite3
+datetime
 
 Author
 Anna Cherkashina
 BSc Data Science, Simon Fraser University
-
