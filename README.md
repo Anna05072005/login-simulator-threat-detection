@@ -16,10 +16,10 @@ The goal is to demonstrate an end-to-end cybersecurity data workflow, including 
 
 The simulator dynamically creates:
 
-Users with departments and roles
-Devices with operating systems and browsers
-IP addresses and geographic locations
-Successful and failed login attempt  
+- Users with departments and roles
+- Devices with operating systems and browsers
+- IP addresses and geographic locations
+- Successful and failed login attempt  
 
 Suspicious activity is probabilistically injected to simulate realistic attack scenarios.
 
@@ -44,18 +44,18 @@ login-simulator-siem/
 
 ## Methodology
 
-Authentication telemetry simulation using Python
-SQLite database schema with indexed tables
-SQL-based threat detection rules
-Aggregation over rolling 10-minute windows
-Alert generation with severity levels
+- Authentication telemetry simulation using Python
+- SQLite database schema with indexed tables
+- SQL-based threat detection rules
+- Aggregation over rolling 10-minute windows
+- Alert generation with severity levels
 
 Detection rules identify:
 
-Brute-force attacks from a single IP
-Account under attack (multiple failed attempts)
-Password spraying (one IP targeting many users)
-New device login activity
+- Brute-force attacks from a single IP
+- Account under attack (multiple failed attempts)
+- Password spraying (one IP targeting many users)
+- New device login activity
 
 ---
 
