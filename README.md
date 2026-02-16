@@ -1,100 +1,82 @@
-Login Activity Simulator & Threat Detection System
-Overview
+# Login Activity Simulator & Threat Detection System
+
+## Overview
 
 This project builds a security analytics pipeline that simulates corporate authentication activity and detects suspicious behavior using SQL-based detection rules.
 
 The goal is to demonstrate an end-to-end cybersecurity data workflow including event simulation, database design, rule-based detection, and alert generation.
 
-Dataset
+---
 
-Source: Synthetic authentication telemetry generated in Python
+## Dataset
 
-Database file: data/siem.db (generated locally)
-
-Main table: auth_events
+- Source: Synthetic authentication telemetry generated in Python  
+- Database file: `data/siem.db` (generated locally)  
+- Main table: `auth_events`
 
 The simulator dynamically creates:
 
-Users with departments and roles
-
-Devices with operating systems and browsers
-
-IP addresses and geographic locations
-
-Successful and failed login attempts
+- Users with departments and roles
+- Devices with operating systems and browsers
+- IP addresses and geographic locations
+- Successful and failed login attempts
 
 Suspicious activity is probabilistically injected to simulate realistic attack scenarios.
 
-Project Structure
+---
+
+## Project Structure
+
 login-simulator-siem/
 ├── data/
-│   └── siem.db
+│ └── siem.db
 ├── src/
-│   ├── simulate.py
-│   └── detect.py
+│ ├── simulate.py
+│ └── detect.py
 ├── schema.sql
 ├── detections.sql
 ├── requirements.txt
 └── README.md
 
-Methodology
 
-Authentication telemetry simulation using Python
+---
 
-SQLite database schema with indexed tables
+## Methodology
 
-SQL-based threat detection rules
-
-Aggregation over rolling 10-minute windows
-
-Alert generation with severity levels
+- Authentication telemetry simulation using Python
+- SQLite database schema with indexed tables
+- SQL-based threat detection rules
+- Aggregation over rolling 10-minute windows
+- Alert generation with severity levels
 
 Detection rules identify:
 
-Brute-force attacks from a single IP
+- Brute-force attacks from a single IP
+- Account under attack (multiple failed attempts)
+- Password spraying (one IP targeting many users)
+- New device login activity
 
-Account under attack (multiple failed attempts)
+Alerts are stored in the `alerts` table with timestamp, severity, entity, and explanation.
 
-Password spraying (one IP targeting many users)
+---
 
-New device login activity
+## How to Run
 
-Alerts are stored in the alerts table with timestamp, severity, entity, and explanation.
-
-Results
-
-The system successfully generates realistic authentication telemetry and identifies anomalous patterns using rule-based SQL detection.
-
-Alerts are printed to the terminal and persisted in the database for investigation and further analysis.
-
-How to Run
-
-From the project root directory:
-
+```bash
 python -m venv .venv
-# Windows: .venv\Scripts\activate
-# macOS/Linux: source .venv/bin/activate
-
 pip install -r requirements.txt
 
-# Initialize schema (first run only)
 python src/detect.py --db data/siem.db --init-schema
-
-# Run simulator (60 seconds)
 python src/simulate.py --duration 60
-
-# Run detections
 python src/detect.py --db data/siem.db
 
-Technologies
 
+Technologies
 Python
 SQLite
 SQL
-argparse
-sqlite3
-datetime
 
 Author
 Anna Cherkashina
 BSc Data Science, Simon Fraser University
+
