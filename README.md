@@ -43,18 +43,18 @@ login-simulator-siem/
 
 ## Methodology
 
-- Authentication telemetry simulation using Python
-- SQLite database schema with indexed tables
-- SQL-based threat detection rules
-- Aggregation over rolling 10-minute windows
-- Alert generation with severity levels
+- Authentication telemetry simulation using Python  
+- SQLite database schema with indexed tables  
+- SQL-based threat detection rules  
+- Aggregation over rolling 10-minute windows  
+- Alert generation with severity levels  
 
 Detection rules identify:
 
-- Brute-force attacks from a single IP
-- Account under attack (multiple failed attempts)
-- Password spraying (one IP targeting many users)
-- New device login activity
+- Brute-force attacks from a single IP  
+- Account under attack (multiple failed attempts)  
+- Password spraying (one IP targeting many users)  
+- New device login activity  
 
 Alerts are stored in the `alerts` table with timestamp, severity, entity, and explanation.
 
@@ -70,7 +70,6 @@ python src/detect.py --db data/siem.db --init-schema
 python src/simulate.py --duration 60
 python src/detect.py --db data/siem.db
 
-
 Technologies
 Python
 SQLite
@@ -79,4 +78,3 @@ SQL
 Author
 Anna Cherkashina
 BSc Data Science, Simon Fraser University
-
