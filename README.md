@@ -27,6 +27,8 @@ Suspicious activity is probabilistically injected to simulate realistic attack s
 
 ## Project Structure
 
+```
+
 login-simulator-siem/
 ├── data/
 │ └── siem.db
@@ -60,6 +62,14 @@ Alerts are stored in the `alerts` table with timestamp, severity, entity, and ex
 
 ---
 
+## Results 
+
+The system successfully generates realistic authentication telemetry and identifies anomalous patterns using rule-based SQL detection.
+
+Alerts are printed to the terminal and persisted in the database for investigation and further analysis.
+
+---
+
 ## How to Run
 
 ```bash
@@ -69,12 +79,20 @@ pip install -r requirements.txt
 python src/detect.py --db data/siem.db --init-schema
 python src/simulate.py --duration 60
 python src/detect.py --db data/siem.db
+```
 
-Technologies
+---
+
+## Technologies
 Python
 SQLite
 SQL
+argparse
+sqlite3
+datetime
 
-Author
+---
+
+## Author
 Anna Cherkashina
 BSc Data Science, Simon Fraser University
