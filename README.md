@@ -10,19 +10,21 @@ The objective is to demonstrate an end-to-end security analytics workflow includ
 ---
 
 ## Project Structure
+
 login-simulator-siem/
 ├── data/
 │ └── siem.db # generated locally (not committed)
 ├── src/
-│ ├── simulate.py # generates auth events
+│ ├── simulate.py # generates authentication events
 │ └── detect.py # runs SQL detections and stores alerts
-├── schema.sql # DB schema (tables + indexes)
+├── schema.sql # database schema (tables + indexes)
 ├── detections.sql # SQL detection rules
 ├── requirements.txt
 └── README.md
 
 
-Note: `data/siem.db` is generated locally and ignored via `.gitignore`.
+> Note: `data/siem.db` is generated locally and ignored via `.gitignore`.
+
 
 ---
 
@@ -61,25 +63,36 @@ Indexes are applied to authentication timestamps and commonly filtered fields fo
 
 ---
 
+
 ## How to Run
 
-### 0) Setup
+###
+0) Setup 
+
 ```bash
 python -m venv .venv
 # Windows: .venv\Scripts\activate
 # macOS/Linux: source .venv/bin/activate
 pip install -r requirements.txt
-1) Initialize schema (first run or after deleting DB)
+
+1) Initialize schema ((first run or after deleting DB)
+
 python src/detect.py --db data/siem.db --init-schema
+
 2) Start the simulator
 Run for 60 seconds:
 
 python src/simulate.py --duration 60
+
 Or run indefinitely (stop with Ctrl+C):
 
 python src/simulate.py
+
+
 3) Run detections
+
 python src/detect.py --db data/siem.db
+
 Recent alerts will be printed to the terminal and stored in the alerts table.
 
 Technologies
